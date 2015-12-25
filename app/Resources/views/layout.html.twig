@@ -12,14 +12,8 @@
     {% endblock %}
   </head>
   <body>
-    <header class="jumbotron">
-      <div class="container">
-        <h1>Warhammer register</h1>
-        <p>
-          Platform to reference all Non-Player Characters (NPC) of Warhammer.<br/>
-        </p>
-      </div>
-    </header>
+    
+    {{ include("navbar.html.twig") }}
     
     <div class="container">
       <div class="row">
@@ -33,19 +27,16 @@
     <hr>
     
     <footer>
-      <div class="container">
-        <p>Alexandre Emion - 2015 </p>
-        <a href="mailto:{{ webmaster_mail}}">Contact the webmaster</a>
-        {% block javascripts %}
-          {# Bootstrap #}
-          <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-          <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-          <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-          <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
-          {# Custom scripts #}
-          <script src="{{asset('js/functions.js')}}"></script>
-        {% endblock %}
-      </div>
+      <p> <a href="mailto:{{ webmaster_mail}}">Alexandre Emion</a> - 2015 </p>
+      {% block javascripts %}
+        {# Bootstrap #}
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+        {# Custom scripts #}
+        <script src="{{asset('js/functions.js')}}"></script>
+      {% endblock %}
     </footer>
   </body>
   
