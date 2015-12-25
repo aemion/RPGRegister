@@ -1,0 +1,48 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  {{ parent() }} - Register
+{% endblock %}
+
+{% block body %}
+
+  <nav id="menu" class="col-md-3">
+    <a href="{{ path('emion_register_homepage') }}" class="btn btn-info btn-group-justified">
+      <i class="glyphicon glyphicon-circle-arrow-up"></i>
+      Homepage
+    </a>
+    <hr/>
+    <a href="{{ path('emion_register_add_npc') }}" class="btn btn-primary btn-group-justified">
+      <i class="glyphicon glyphicon-plus"></i>
+      Add a NPC
+    </a><br/>
+    <a href="{{ path('emion_register_view_all_npc') }}" class="btn btn-primary btn-group-justified">
+      <i class="glyphicon glyphicon-circle-arrow-right"></i>
+      View all NPC
+    </a>
+    <hr/>
+    <a href="{{ path('emion_register_add_book') }}" class="btn btn-primary btn-group-justified">
+      <i class="glyphicon glyphicon-plus"></i>
+      Add a book
+    </a><br/>
+    <a href="{{ path('emion_register_view_all_books') }}" class="btn btn-primary btn-group-justified">
+      <i class="glyphicon glyphicon-circle-arrow-right"></i>
+      View all books
+    </a>
+    
+   {# <h4>Liste des livres</h4>
+    {{ render(controller("EmionRegisterBundle:Book:menu", {'limit': 3})) }} #}
+  </nav>
+  <section class="col-md-9">
+    <h1>Register</h1>
+    {% block emionregister_body %}
+    {% endblock %}
+  </section>
+
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{asset('js/EmionRegisterBundle/ajax.js')}}"></script>
+{% endblock %}

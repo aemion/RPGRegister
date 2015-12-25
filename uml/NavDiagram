@@ -1,0 +1,21 @@
+@startuml
+start
+if(Utilisateur connecté?) then (oui)
+else (non)
+		:Page d'accueil\n non connectée;
+		if(Se connecter) then (oui)
+		elseif (Créer un compte)  then (oui)
+			:Page d'inscription;
+    else (mode non connecté)
+		endif
+endif
+:Page d'accueil;
+
+:Page campagne;
+:Page consultation PNJ;
+:Page recherche;
+:Page édition de profil;
+:Page édition PNJ;
+:Page création PNJ;
+stop
+@enduml

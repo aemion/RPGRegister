@@ -1,0 +1,41 @@
+@startuml
+
+:Utilisateur connecté: as CO
+:Utilisateur non connecté: as NCO
+:Administrateur: as ADMIN
+
+(Se connecter) as LOGIN
+(Se déconnecter) as LOGOUT
+(S'inscrire) as SIGNUP
+
+(Créer campagne) as CREATE_CAMP
+(Modifier campagne) as EDIT_CAMP
+(Consulter ensemble campagnes) as VIEW_CAMP
+(Supprimer campagne) as DEL_CAMP
+(Créer PNJ global) as CREATE_GLOBAL_NPC
+(Créer PNJ de campagne) as CREATE_CAMP_NPC
+(Supprimer PNJ) as DEL_NPC
+(Modifier PNJ) as EDIT_NPC
+(Consulter PNJ\n d'une campagne) as VIEW_CAMP_NPC
+
+CO <|-- ADMIN
+
+CO --> LOGOUT
+NCO --> LOGIN
+NCO --> SIGNUP
+
+ADMIN --> CREATE_GLOBAL_NPC
+
+CO --> CREATE_CAMP
+CO --> EDIT_CAMP
+CO --> VIEW_CAMP
+CO --> DEL_CAMP
+CO --> CREATE_CAMP_NPC
+CO --> DEL_NPC
+CO --> EDIT_NPC
+CO --> VIEW_CAMP_NPC
+
+NCO --> VIEW_CAMP
+NCO --> VIEW_CAMP_NPC
+
+@enduml

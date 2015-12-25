@@ -1,0 +1,30 @@
+{% extends "EmionRegisterBundle::layout.html.twig" %}
+
+{% block emionregister_body %}
+  {% if book is not null %}
+    <h3>{{ book.name }}</h3> 
+    <p>
+      <a href="{{ path('emion_register_edit_book', {'id' : book.id}) }}" class="btn btn-success">
+        <i class="glyphicon glyphicon-pencil"></i>
+      </a>
+      <a href="{{ path('emion_register_del_book', {'id' : book.id}) }}" class="btn btn-danger confirmation">
+        <i class="glyphicon glyphicon-remove"></i>
+      </a>
+    </p>
+    <div>
+      <div>
+        {% if book.description is not null %} 
+          {{ book.description }} 
+        {% else %}
+          No description available.
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <h3>Can't find this book</h3>
+    <div>
+      <p>No book here<p/>
+      {{ include("::submitError.html.twig") }}
+    </div>
+  {% endif %}
+{% endblock %}

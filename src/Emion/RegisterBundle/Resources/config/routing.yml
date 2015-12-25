@@ -1,0 +1,73 @@
+emion_register_homepage:
+    path:     /
+    defaults: {_controller: EmionRegisterBundle:Register:index }
+    
+    
+    
+emion_register_view_npc:
+    path:     /view-npc/{id}
+    defaults: {_controller: EmionRegisterBundle:Character:view }
+    requirements:
+        id: \d+
+        
+emion_register_view_all_npc:
+    path:     /view-all-npc/{page}
+    defaults: 
+        _controller: EmionRegisterBundle:Character:viewAll 
+        page: 1 
+    requirements:
+        id: \d*
+
+emion_register_add_npc:
+    path:     /add-npc
+    defaults: {_controller: EmionRegisterBundle:Character:add }
+    
+emion_register_edit_npc:
+    path:     /edit-npc/{id}
+    defaults: {_controller: EmionRegisterBundle:Character:edit }
+    requirements:
+      id: \d+
+      
+emion_register_del_npc:
+    path:     /del-npc/{id}
+    defaults: {_controller: EmionRegisterBundle:Character:del }
+    requirements:
+      id: \d+
+    
+emion_register_add_ref_npc:
+    path:     /add-ref
+    defaults: {_controller: EmionRegisterBundle:Character:addRef }
+    condition: "request.isXmlHttpRequest()"
+    
+    
+    
+emion_register_view_book:
+    path:     /view-book/{id}
+    defaults: {_controller: EmionRegisterBundle:Book:view }
+    requirements:
+        id: \d+
+        
+emion_register_view_all_books:
+    path:     /view-all-books/{page}
+    defaults: 
+        _controller: EmionRegisterBundle:Book:viewAll 
+        page: 1 
+    requirements:
+        id: \d*
+
+emion_register_add_book:
+    path:     /add-book
+    defaults: {_controller: EmionRegisterBundle:Book:add }
+    
+emion_register_edit_book:
+    path:     /edit-book/{id}
+    defaults: {_controller: EmionRegisterBundle:Book:edit }
+    requirements:
+      id: \d+
+      
+emion_register_del_book:
+    path:     /del-book/{id}
+    defaults: {_controller: EmionRegisterBundle:Book:del }
+    requirements:
+      id: \d+
+    

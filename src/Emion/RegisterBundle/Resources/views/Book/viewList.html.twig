@@ -1,0 +1,19 @@
+{% extends "EmionRegisterBundle::layout.html.twig" %}
+
+{% block emionregister_body %}
+  <h3>Books</h3>
+  <ul>
+    {% for book in listBooks %}
+      <li>
+        <a href="{{ path('emion_register_view_book', {'id': book.id}) }}">
+          {{ book.name }}
+        </a>
+      </li>
+    {% else %}
+      <li>No book added yet...</li>
+    {% endfor %}
+  </ul>
+  
+  {{ include("::pagination.html.twig", {route: 'emion_register_view_all_books'}) }}
+  
+{% endblock %}

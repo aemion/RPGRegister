@@ -1,0 +1,40 @@
+{% extends "EmionRegisterBundle::layout.html.twig" %}
+
+{% block emionregister_body %}
+  {% if npc is not null %}
+    <h3>{{ npc.name }}</h3> 
+    <p>
+      <a href="{{ path('emion_register_edit_npc', {'id' : npc.id}) }}" class="btn btn-success">
+        <i class="glyphicon glyphicon-pencil"></i>
+      </a>
+      <a href="{{ path('emion_register_del_npc', {'id' : npc.id}) }}" class="btn btn-danger confirmation">
+        <i class="glyphicon glyphicon-remove"></i>
+      </a>
+    </p>
+    <div>
+      <div>
+      {% if npc.race is not null %}
+        {{npc.race.name}},
+      {% else %}
+        Unknown race,
+      {% endif %}
+       {{npc.activity}}, {{npc.location}}, {{npc.birth}} - {{npc.death}} 
+      </div>
+      <div>
+        Description : 
+        {% if npc.description is not null %} 
+          {{ npc.description }} 
+        {% else %}
+          No description available
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <h3>Can't find this NPC</h3>
+    <div>
+      <p>No NPC here<p/>
+      {{ include("::submitError.html.twig") }}
+    </div>
+  {% endif %}
+  
+{% endblock %}

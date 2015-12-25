@@ -1,0 +1,25 @@
+{% extends "EmionRegisterBundle::layout.html.twig" %}
+
+{% block emionregister_body %}
+  {% if npc is not null %}
+
+
+      <h2>Edit a NPC</h2>
+
+      {{ include("EmionRegisterBundle:Character:form.html.twig") }}
+
+      <p>
+        <a href="{{ path('emion_register_view_npc', {'id': npc.id}) }}" class="btn btn-default">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+          Back to the NPC
+        </a>
+      </p>
+
+  {% else %}
+    <h3>Can't find this NPC</h3>
+    <div>
+      <p>No NPC here<p/>
+      {{ include("::submitError.html.twig") }}
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+<nav>
+  <ul class="pagination">
+    {% if currentPage > 1 %}
+    <li><a href="{{path(route, {'page' : currentPage-1})}}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+    {% endif %}
+    {% for i in 1..maxPage %}
+      <li class="{% if i == currentPage %}active{% endif %}"><a href="{{path(route, {'page' : i})}}">{{i}}</a></li>
+    {% endfor %}
+    {% if currentPage < maxPage %}
+    <li><a href="{{path(route, {'page' : currentPage+1})}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+    {% endif %}
+  </ul>
+</nav>

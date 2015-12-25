@@ -1,0 +1,24 @@
+{% extends "EmionRegisterBundle::layout.html.twig" %}
+
+{% block emionregister_body %}
+  <h3>Non-player characters</h3>
+  <ul>
+    {% for npc in listNpc %}
+      <li>
+        <a href="{{ path('emion_register_view_npc', {'id': npc.id}) }}">
+          {{ npc.name }}
+        </a>
+        : {{ npc.activity }} 
+        {% if npc.race is not null %}
+          {{npc.race.name}}
+        {% endif %}
+      </li>
+    {% else %}
+      <li>No NPC added yet...</li>
+    {% endfor %}
+  </ul>
+  
+  {{ include("::pagination.html.twig", {route: 'emion_register_view_all_npc'}) }}
+  
+  
+{% endblock %}

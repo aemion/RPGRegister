@@ -1,0 +1,25 @@
+{% extends "EmionRegisterBundle::layout.html.twig" %}
+
+{% block emionregister_body %}
+  {% if book is not null %}
+
+
+      <h2>Edit a book</h2>
+
+      {{ include("EmionRegisterBundle:Book:form.html.twig") }}
+
+      <p>
+        <a href="{{ path('emion_register_view_book', {'id': book.id}) }}" class="btn btn-default">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+          Back to the book
+        </a>
+      </p>
+
+  {% else %}
+    <h3>Can't find this book</h3>
+    <div>
+      <p>No book here<p/>
+      {{ include("::submitError.html.twig") }}
+    </div>
+  {% endif %}
+{% endblock %}

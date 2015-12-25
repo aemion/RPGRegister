@@ -1,0 +1,13 @@
+{% extends "EmionRegisterBundle::layout.html.twig" %}
+
+{% block emionregister_body %}
+  {% if npc is not null %}
+    <h3>{{ npc.name }} deleted !</h3> 
+  {% else %}
+    <h3>Can't delete this NPC</h3>
+    <div>
+      <p>No NPC here<p/>
+      {{ include("::submitError.html.twig") }}
+    </div>
+  {% endif %}
+{% endblock %}
