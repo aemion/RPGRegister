@@ -11,6 +11,9 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+      {% if is_granted("ROLE_ADMIN") %}
+        <li><a href="#">Admin</a></li>
+      {% endif %}
       <li><a href="{{ path('fos_user_profile_show') }}">My profile ({{ app.user.username }})</a></li>
       <li><a href="{{ path('fos_user_security_logout') }}">Log out</a></li>
     {% else %}
