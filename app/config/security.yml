@@ -7,7 +7,10 @@ security:
         Emion\UserBundle\Entity\User: sha512
         
     role_hierarchy:
-        ROLE_ADMIN: ROLE_USER
+        ROLE_AUTHOR: ROLE_USER
+        ROLE_MODO:  ROLE_AUTHOR
+        ROLE_ADMIN: [ROLE_AUTHOR, ROLE_MODO]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
         test:
