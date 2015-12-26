@@ -19,6 +19,11 @@ class NPC
     private $race;
     
     /**
+    * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\Universe", cascade={"persist"})
+    */
+    private $universe;
+    
+    /**
     * @ORM\ManyToMany(targetEntity="Emion\RegisterBundle\Entity\Tag", cascade={"persist"})
     */
     private $tags;
@@ -35,7 +40,7 @@ class NPC
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text")
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
@@ -49,7 +54,7 @@ class NPC
     /**
      * @var string
      *
-     * @ORM\Column(name="location", type="text", nullable=true)
+     * @ORM\Column(name="location", type="string", length=255, nullable=true)
      */
     private $location;
 
@@ -70,7 +75,7 @@ class NPC
     /**
      * @var string
      *
-     * @ORM\Column(name="activity", type="text")
+     * @ORM\Column(name="activity", type="string", length=255)
      */
     private $activity;
 
@@ -290,5 +295,29 @@ class NPC
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Set universe
+     *
+     * @param \Emion\RegisterBundle\Entity\Universe $universe
+     *
+     * @return NPC
+     */
+    public function setUniverse(\Emion\RegisterBundle\Entity\Universe $universe = null)
+    {
+        $this->universe = $universe;
+
+        return $this;
+    }
+
+    /**
+     * Get universe
+     *
+     * @return \Emion\RegisterBundle\Entity\Universe
+     */
+    public function getUniverse()
+    {
+        return $this->universe;
     }
 }

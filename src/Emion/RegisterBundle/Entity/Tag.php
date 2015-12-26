@@ -24,7 +24,7 @@ class Tag
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text", unique=true)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 

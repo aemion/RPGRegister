@@ -14,9 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
 class NPC
 {
     /**
-    * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\Race")
+    * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\Race", cascade={"persist"})
     */
     private $race;
+    
+    /**
+    * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\Universe", cascade={"persist"})
+    */
+    private $universe;
     
     /**
     * @ORM\ManyToMany(targetEntity="Emion\RegisterBundle\Entity\Tag", cascade={"persist"})
@@ -35,7 +40,7 @@ class NPC
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="text")
      */
     private $name;
 
@@ -49,7 +54,7 @@ class NPC
     /**
      * @var string
      *
-     * @ORM\Column(name="location", type="string", length=255, nullable=true)
+     * @ORM\Column(name="location", type="text", nullable=true)
      */
     private $location;
 
@@ -70,7 +75,7 @@ class NPC
     /**
      * @var string
      *
-     * @ORM\Column(name="activity", type="string", length=255)
+     * @ORM\Column(name="activity", type="text")
      */
     private $activity;
 

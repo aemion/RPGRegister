@@ -16,6 +16,7 @@ class BookType extends AbstractType
     {
         $builder
             ->add('name', 'text')
+            ->add('universe', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', array('class' => 'EmionRegisterBundle:Universe', 'choice_label' => 'name'))
             ->add('description', 'textarea', array('required' => false))
             ->add('save', 'submit')
         ;

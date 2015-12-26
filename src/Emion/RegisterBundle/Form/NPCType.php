@@ -18,12 +18,13 @@ class NPCType extends AbstractType
     {
       $builder
            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType')
+           ->add('universe', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', array('class' => 'EmionRegisterBundle:Universe', 'choice_label' => 'name'))
            ->add('location', 'Symfony\Component\Form\Extension\Core\Type\TextType', array('required' => false))
            ->add('activity', 'Symfony\Component\Form\Extension\Core\Type\TextType')
            ->add('birth', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', array('required' => false))
            ->add('death', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', array('required' => false))
            ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', array('required' => false))
-           ->add('race', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', array('class' => 'EmionRegisterBundle:Race', 'choice_label' => 'name')) 
+           ->add('race', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', array('class' => 'EmionRegisterBundle:Race', 'choice_label' => 'name'))  
            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
       ;
     }

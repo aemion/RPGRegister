@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Universe
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Emion\RegisterBundle\Entity\UniverseRepository")
+ * @ORM\Entity(repositoryClass="Emion\RegisterBundle\Repository\UniverseRepository")
  */
 class Universe
 {
@@ -24,14 +24,14 @@ class Universe
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text")
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 

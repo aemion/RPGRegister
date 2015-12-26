@@ -13,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Book
 {
     /**
+    * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\Universe", cascade={"persist"})
+    */
+    private $universe;
+    
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -24,7 +29,7 @@ class Book
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text", unique=true)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
@@ -93,5 +98,28 @@ class Book
     {
         return $this->description;
     }
-}
 
+    /**
+     * Set universe
+     *
+     * @param \Emion\RegisterBundle\Entity\Universe $universe
+     *
+     * @return Book
+     */
+    public function setUniverse(\Emion\RegisterBundle\Entity\Universe $universe = null)
+    {
+        $this->universe = $universe;
+
+        return $this;
+    }
+
+    /**
+     * Get universe
+     *
+     * @return \Emion\RegisterBundle\Entity\Universe
+     */
+    public function getUniverse()
+    {
+        return $this->universe;
+    }
+}

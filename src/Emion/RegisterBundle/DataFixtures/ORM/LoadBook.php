@@ -6,13 +6,16 @@ namespace Emion\RegisterBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Emion\RegisterBundle\Entity\Book;
+use Emion\RegisterBundle\Entity\Universe;
 
 class LoadBook implements FixtureInterface
 {
   // Dans l'argument de la méthode load, l'objet $manager est l'EntityManager
   public function load(ObjectManager $manager)
   {
-    // Liste des noms de catégorie à ajouter
+    $universe = new Universe();
+    $universe->setName("Warhammer");
+    $universe->setDescription("Un univers un peu dark");
     $books = array(
       'Livre de base' => 'Le livre de base de WJDR detaillant les regles principales',
       'Tome de la corruption' => 'Chaos',
@@ -21,17 +24,15 @@ class LoadBook implements FixtureInterface
     );
 
     foreach ($books as $name => $desc) {
-      // On crée la catégorie
       $book = new Book();
       $book->setName($name);
       $book->setDescription($desc);
+      $book->setUniverse($universe);
       
 
-      // On la persiste
       $manager->persist($book);
     }
 
-    // On déclenche l'enregistrement de toutes les catégories
     $manager->flush();
   }
 }

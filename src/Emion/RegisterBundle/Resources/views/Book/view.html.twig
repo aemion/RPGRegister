@@ -2,7 +2,7 @@
 
 {% block emionregister_body %}
   {% if book is not null %}
-    <h3>{{ book.name }}</h3> 
+    <h3>{{ book.name }} {% if book.universe is not null %}({{book.universe.name}}){% endif %}</h3> 
     <p>
       <a href="{{ path('emion_register_edit_book', {'id' : book.id}) }}" class="btn btn-success">
         <i class="glyphicon glyphicon-pencil"></i>
