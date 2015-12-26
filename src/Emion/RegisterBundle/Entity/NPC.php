@@ -35,7 +35,7 @@ class NPC
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="text")
      */
     private $name;
 
@@ -49,7 +49,7 @@ class NPC
     /**
      * @var string
      *
-     * @ORM\Column(name="location", type="string", length=255, nullable=true)
+     * @ORM\Column(name="location", type="text", nullable=true)
      */
     private $location;
 
@@ -70,7 +70,7 @@ class NPC
     /**
      * @var string
      *
-     * @ORM\Column(name="activity", type="string", length=255)
+     * @ORM\Column(name="activity", type="text")
      */
     private $activity;
 
