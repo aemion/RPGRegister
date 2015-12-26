@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Emion\RegisterBundle\Entity\NPC;
 use Emion\RegisterBundle\Form\NPCType;
@@ -23,7 +24,9 @@ class CharacterController extends Controller
     return $this->render('EmionRegisterBundle:Character:view.html.twig', array('npc' => $npc, 'listReferences' => $listReferences));
   }
   
+  
   public function addAction(Request $request) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to add a NPC");
     $npc = new NPC();
     
     $form = $this->createForm(NPCType::class, $npc);
@@ -58,8 +61,10 @@ class CharacterController extends Controller
   
   public function editAction($id, Request $request) 
   {
-    $npc = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to edit a NPC");
     
+    $npc = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
+    $this->denyAccessUnlessGranted('EDIT', $npc, "You don't have the required permissions to edit this NPC");
     $form = $this->createForm(NPCType::class, $npc);
                  
     $form->handleRequest($request);
@@ -84,8 +89,10 @@ class CharacterController extends Controller
   }
   
   public function delAction($id) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to delete a NPC");
     $em = $this->getDoctrine()->getManager();
     $npc = $em->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
+    $this->denyAccessUnlessGranted('DELETE', $npc, "You don't have the required permissions to delete this NPC");
     $view = $this->render('EmionRegisterBundle:Character:del.html.twig', array('npc' => $npc));
     if($npc != null) {
       $em->remove($npc);
@@ -168,4 +175,6 @@ class CharacterController extends Controller
     }
     return new Response("ref-".$id);
   }
+  
+
 }
