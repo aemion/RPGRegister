@@ -6,6 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+
 use Emion\RegisterBundle\Entity\NPC;
 use Emion\RegisterBundle\Form\NPCType;
 use Emion\RegisterBundle\Entity\NPCBook;
@@ -30,6 +34,20 @@ class CharacterController extends Controller
       $em = $this->getDoctrine()->getManager();
       $em->persist($npc);
       $em->flush();
+      
+       // creating the ACL
+      $aclProvider = $this->get('security.acl.provider');
+      $objectIdentity = ObjectIdentity::fromDomainObject($npc);
+      $acl = $aclProvider->createAcl($objectIdentity);
+
+      // retrieving the security identity of the currently logged-in user
+      $tokenStorage = $this->get('security.token_storage');
+      $user = $tokenStorage->getToken()->getUser();
+      $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+      // grant owner access
+      $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+      $aclProvider->updateAcl($acl);
 
       $request->getSession()->getFlashBag()->add('notice', 'NPC added.');
       return $this->redirect($this->generateUrl('emion_register_view_npc', array('id' => $npc->getId())));
@@ -90,6 +108,20 @@ class CharacterController extends Controller
       $em = $this->getDoctrine()->getManager();
       $em->persist($npcbook);
       $em->flush();
+      
+      // creating the ACL
+      $aclProvider = $this->get('security.acl.provider');
+      $objectIdentity = ObjectIdentity::fromDomainObject($npcbook);
+      $acl = $aclProvider->createAcl($objectIdentity);
+
+      // retrieving the security identity of the currently logged-in user
+      $tokenStorage = $this->get('security.token_storage');
+      $user = $tokenStorage->getToken()->getUser();
+      $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+      // grant owner access
+      $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+      $aclProvider->updateAcl($acl);
 
       $request->getSession()->getFlashBag()->add('notice', 'Reference added.');
       return $this->redirect($this->generateUrl('emion_register_view_npc', array('id' => $npc->getId())));

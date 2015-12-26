@@ -47,8 +47,9 @@
           <li id="ref-{{ref.id}}"><strong>{{ ref.book.name }}</strong> (page {{ ref.page }})
           {% if is_granted('OPERATOR', ref) %}
             <a href="{{path('emion_register_edit_ref_npc', {'id' : ref.id})}}" class="btn btn-success"><i class="glyphicon glyphicon-pencil"></i></a>
-            <button class="del-reference btn btn-danger confirmation" id="del-{{ref.id}}"><i class="glyphicon glyphicon-remove"></i></button> <br/>
+            <button class="del-reference btn btn-danger confirmation" id="del-{{ref.id}}"><i class="glyphicon glyphicon-remove"></i></button> 
           {% endif %}
+          <br/>
           {{ref.details}}
           </li>
         {% endfor %}
