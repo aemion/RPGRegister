@@ -39,7 +39,9 @@
       <h4>References</h4>
       <ul>
       {% for ref in listReferences %}
-        <li>{{ ref.book.name }} (page {{ ref.page }}) <br/>
+        <li>{{ ref.book.name }} (page {{ ref.page }}) 
+        <a href="#"><i class="glyphicon glyphicon-pencil"></i></a>
+        <a href="#"><i class="glyphicon glyphicon-remove"></i></a> <br/>
           {{ref.details}}
         </li>
       {% endfor %}
