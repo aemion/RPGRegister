@@ -18,4 +18,7 @@ class NPCRepository extends \Doctrine\ORM\EntityRepository
       ->getSingleScalarResult()
     ;
   }
+  public function getReferences($id) {
+    return null;
+  }
 }
