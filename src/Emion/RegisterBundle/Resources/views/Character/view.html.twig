@@ -4,12 +4,14 @@
   {% if npc is not null %}
     <h3>{{ npc.name }}</h3> 
     <p>
+    {% if is_granted('OPERATOR', npc) %}
       <a href="{{ path('emion_register_edit_npc', {'id' : npc.id}) }}" class="btn btn-success">
         <i class="glyphicon glyphicon-pencil"></i>
       </a>
       <a href="{{ path('emion_register_del_npc', {'id' : npc.id}) }}" class="btn btn-danger confirmation">
         <i class="glyphicon glyphicon-remove"></i>
       </a>
+    {% endif %}
       <a href="{{ path('emion_register_add_ref_npc', {'id' : npc.id}) }}" class="btn btn-primary">
         <i class="glyphicon glyphicon-plus"></i>
         Add a reference
@@ -42,9 +44,11 @@
         <h4>References</h4>
         <ul>
         {% for ref in listReferences %}
-          <li id="ref-{{ref.id}}"><strong>{{ ref.book.name }}</strong> (page {{ ref.page }}) 
-          <a href="{{path('emion_register_edit_ref_npc', {'id' : ref.id})}}" class="btn btn-success"><i class="glyphicon glyphicon-pencil"></i></a>
-          <button class="del-reference btn btn-danger confirmation" id="del-{{ref.id}}"><i class="glyphicon glyphicon-remove"></i></button> <br/>
+          <li id="ref-{{ref.id}}"><strong>{{ ref.book.name }}</strong> (page {{ ref.page }})
+          {% if is_granted('OPERATOR', ref) %}
+            <a href="{{path('emion_register_edit_ref_npc', {'id' : ref.id})}}" class="btn btn-success"><i class="glyphicon glyphicon-pencil"></i></a>
+            <button class="del-reference btn btn-danger confirmation" id="del-{{ref.id}}"><i class="glyphicon glyphicon-remove"></i></button> <br/>
+          {% endif %}
           {{ref.details}}
           </li>
         {% endfor %}
