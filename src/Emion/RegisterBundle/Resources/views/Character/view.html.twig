@@ -15,6 +15,7 @@
         Add a reference
       </a>
     </p>
+    
     <div>
       <div>
       {% if npc.race is not null %}
@@ -33,6 +34,18 @@
         {% endif %}
       </div>
     </div>
+    {% if listReferences is not null %}
+    <div>
+      <h4>References</h4>
+      <ul>
+      {% for ref in listReferences %}
+        <li>{{ ref.book.name }} (page {{ ref.page }}) <br/>
+          {{ref.details}}
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
   {% else %}
     <h3>Can't find this NPC</h3>
     <div>

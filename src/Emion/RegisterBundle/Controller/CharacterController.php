@@ -14,7 +14,7 @@ class CharacterController extends Controller
 {
   public function viewAction($id) {
     $npc = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
-    return $this->render('EmionRegisterBundle:Character:view.html.twig', array('npc' => $npc));
+    return $this->render('EmionRegisterBundle:Character:view.html.twig', array('npc' => $npc, 'listReferences' => null));
   }
   
   public function addAction(Request $request) {
