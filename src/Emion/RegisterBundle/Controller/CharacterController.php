@@ -74,7 +74,29 @@ class CharacterController extends Controller
     return $view;
   }
   
-  public function addRefAction() {
+  public function addRefAction($id, Request $request) {
+    $npc = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
+    $npcbook = new NPCBook();
+    $npcbook->setNpc($npc);
+    
+    
+    $form = $this->createForm(NPCBookType::class, $npcbook);
+                 
+    $form->handleRequest($request);
+
+    if ($form->isValid()) {
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($npcbook);
+      $em->flush();
+
+      $request->getSession()->getFlashBag()->add('notice', 'Reference added.');
+      return $this->redirect($this->generateUrl('emion_register_view_npc', array('id' => $npc->getId())));
+    }             
+    
+    return $this->render('EmionRegisterBundle:Character:addRef.html.twig', array('npc' => $npc, 'form' => $form->createView()));
+  }
+  
+  public function addRefAjaxAction() {
     $npcbook = new NPCBook();
     
     $form = $this->createForm(NPCBookType::class, $npcbook);

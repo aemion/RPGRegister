@@ -36,8 +36,14 @@ emion_register_del_npc:
     
 emion_register_ajax_add_ref_npc:
     path:     /add-ref
-    defaults: {_controller: EmionRegisterBundle:Character:addRef }
+    defaults: {_controller: EmionRegisterBundle:Character:addRefAjax }
     condition: "request.isXmlHttpRequest()"
+    
+emion_register_add_ref_npc:
+    path:   /add-npc-ref/{id}
+    defaults: {_controller: EmionRegisterBundle:Character:addRef }
+    requirements:
+      id: \d+
     
     
     
