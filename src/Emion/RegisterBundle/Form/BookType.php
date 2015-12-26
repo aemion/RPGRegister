@@ -15,10 +15,10 @@ class BookType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text')
+            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType')
             ->add('universe', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', array('class' => 'EmionRegisterBundle:Universe', 'choice_label' => 'name'))
-            ->add('description', 'textarea', array('required' => false))
-            ->add('save', 'submit')
+            ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', array('required' => false))
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
         ;
     }
     
