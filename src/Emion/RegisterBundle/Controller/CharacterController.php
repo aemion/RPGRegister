@@ -4,6 +4,7 @@ namespace Emion\RegisterBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use Emion\RegisterBundle\Entity\NPC;
 use Emion\RegisterBundle\Form\NPCType;
@@ -103,5 +104,15 @@ class CharacterController extends Controller
     $form = $this->createForm(NPCBookType::class, $npcbook);
    
     return $this->render('EmionRegisterBundle:Character:refForm.html.twig', array('form' => $form->createView()));
+  }
+  
+  public function delRefAjaxAction($id) {
+    $em = $this->getDoctrine()->getManager();
+    $ref = $em->getRepository('EmionRegisterBundle:NPCBook')->findOneById($id);
+    if($ref != null) {
+      $em->remove($ref);
+      $em->flush();
+    }
+    return new Response("ref-".$id);
   }
 }

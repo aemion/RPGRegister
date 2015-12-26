@@ -25,29 +25,33 @@
       {% endif %}
        {{npc.activity}}, {{npc.location}}, {{npc.birth}} - {{npc.death}} 
       </div>
+      
       <div>
-        Description : 
+        <h4>Description</h4>
         {% if npc.description is not null %} 
           {{ npc.description }} 
         {% else %}
           No description available
         {% endif %}
       </div>
+      
     </div>
+    
     {% if listReferences is not null %}
-    <div>
-      <h4>References</h4>
-      <ul>
-      {% for ref in listReferences %}
-        <li>{{ ref.book.name }} (page {{ ref.page }}) 
-        <a href="#"><i class="glyphicon glyphicon-pencil"></i></a>
-        <a href="#"><i class="glyphicon glyphicon-remove"></i></a> <br/>
-          {{ref.details}}
-        </li>
-      {% endfor %}
-      </ul>
-    </div>
+      <div>
+        <h4>References</h4>
+        <ul>
+        {% for ref in listReferences %}
+          <li id="ref-{{ref.id}}">{{ ref.book.name }} (page {{ ref.page }}) 
+          <a href="#" class="btn btn-success"><i class="glyphicon glyphicon-pencil"></i></a>
+          <button class="del-reference btn btn-danger confirmation" id="del-{{ref.id}}"><i class="glyphicon glyphicon-remove"></i></button> <br/>
+            {{ref.details}}
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
     {% endif %}
+    
   {% else %}
     <h3>Can't find this NPC</h3>
     <div>
