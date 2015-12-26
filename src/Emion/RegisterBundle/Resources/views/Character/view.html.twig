@@ -3,6 +3,7 @@
 {% block emionregister_body %}
   {% if npc is not null %}
     <h3>{{ npc.name }}</h3> 
+    {% if is_granted('ROLE_AUTHOR') %}
     <p>
     {% if is_granted('OPERATOR', npc) %}
       <a href="{{ path('emion_register_edit_npc', {'id' : npc.id}) }}" class="btn btn-success">
@@ -17,6 +18,7 @@
         Add a reference
       </a>
     </p>
+    {% endif %}
     
     <div>
       <div>
@@ -45,9 +47,11 @@
         <ul>
         {% for ref in listReferences %}
           <li id="ref-{{ref.id}}"><strong>{{ ref.book.name }}</strong> (page {{ ref.page }})
-          {% if is_granted('OPERATOR', ref) %}
-            <a href="{{path('emion_register_edit_ref_npc', {'id' : ref.id})}}" class="btn btn-success"><i class="glyphicon glyphicon-pencil"></i></a>
-            <button class="del-reference btn btn-danger confirmation" id="del-{{ref.id}}"><i class="glyphicon glyphicon-remove"></i></button> 
+          {% if is_granted('ROLE_AUTHOR') %}
+            {% if is_granted('OPERATOR', ref) %}
+              <a href="{{path('emion_register_edit_ref_npc', {'id' : ref.id})}}" class="btn btn-success"><i class="glyphicon glyphicon-pencil"></i></a>
+              <button class="del-reference btn btn-danger confirmation" id="del-{{ref.id}}"><i class="glyphicon glyphicon-remove"></i></button> 
+            {% endif %}
           {% endif %}
           <br/>
           {{ref.details}}

@@ -2,15 +2,19 @@
 
 {% block emionregister_body %}
   {% if book is not null %}
-    <h3>{{ book.name }} {% if book.universe is not null %}({{book.universe.name}}){% endif %}</h3> 
+    <h3>{{ book.name }} {% if book.universe is not null %}({{book.universe.name}}){% endif %}</h3>
+    {% if is_granted('ROLE_AUTHOR') %}
     <p>
+    {% if is_granted('OPERATOR', book) %}
       <a href="{{ path('emion_register_edit_book', {'id' : book.id}) }}" class="btn btn-success">
         <i class="glyphicon glyphicon-pencil"></i>
       </a>
       <a href="{{ path('emion_register_del_book', {'id' : book.id}) }}" class="btn btn-danger confirmation">
         <i class="glyphicon glyphicon-remove"></i>
       </a>
+    {% endif %}
     </p>
+    {% endif %}
     <div>
       <div>
         {% if book.description is not null %} 

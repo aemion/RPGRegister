@@ -19,7 +19,7 @@
       Homepage
     </a>
     <hr/>
-    <a href="{{ path('emion_register_add_npc') }}" class="btn btn-primary btn-group-justified">
+    <a href="{{ path('emion_register_add_npc') }}" class="btn btn-primary btn-group-justified" {% if not is_granted('ROLE_AUTHOR') %}disabled{% endif %}>
       <i class="glyphicon glyphicon-plus"></i>
       Add a NPC
     </a><br/>
@@ -28,7 +28,7 @@
       View all NPC
     </a>
     <hr/>
-    <a href="{{ path('emion_register_add_book') }}" class="btn btn-primary btn-group-justified">
+    <a href="{{ path('emion_register_add_book') }}" class="btn btn-primary btn-group-justified" {% if not is_granted('ROLE_AUTHOR') %}disabled{% endif %}>
       <i class="glyphicon glyphicon-plus"></i>
       Add a book
     </a><br/>
