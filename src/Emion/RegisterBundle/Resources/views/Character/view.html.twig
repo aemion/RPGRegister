@@ -42,10 +42,10 @@
         <h4>References</h4>
         <ul>
         {% for ref in listReferences %}
-          <li id="ref-{{ref.id}}">{{ ref.book.name }} (page {{ ref.page }}) 
-          <a href="#" class="btn btn-success"><i class="glyphicon glyphicon-pencil"></i></a>
+          <li id="ref-{{ref.id}}"><strong>{{ ref.book.name }}</strong> (page {{ ref.page }}) 
+          <a href="{{path('emion_register_edit_ref_npc', {'id' : ref.id})}}" class="btn btn-success"><i class="glyphicon glyphicon-pencil"></i></a>
           <button class="del-reference btn btn-danger confirmation" id="del-{{ref.id}}"><i class="glyphicon glyphicon-remove"></i></button> <br/>
-            {{ref.details}}
+          {{ref.details}}
           </li>
         {% endfor %}
         </ul>

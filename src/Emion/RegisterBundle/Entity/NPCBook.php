@@ -13,13 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 class NPCBook
 {
     /**
-    * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\NPC")
+    * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\NPC", inversedBy="references")
     * @ORM\JoinColumn(nullable=false)
     */
     private $npc;
     
     /**
-    * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\Book")
+    * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\Book", inversedBy="references")
     * @ORM\JoinColumn(nullable=false)
     */
     private $book;

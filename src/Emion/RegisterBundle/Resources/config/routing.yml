@@ -39,7 +39,13 @@ emion_register_add_ref_npc:
     defaults: {_controller: EmionRegisterBundle:Character:addRef }
     requirements:
       id: \d+
-    
+   
+emion_register_edit_ref_npc:
+    path:     /edit-npc-ref/{id}
+    defaults: {_controller: EmionRegisterBundle:Character:editRef }
+    requirements:
+      id: \d+
+   
 emion_register_ajax_add_ref_npc:
     path:     /add-ref
     defaults: {_controller: EmionRegisterBundle:Character:addRefAjax }

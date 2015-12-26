@@ -13,6 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class NPC
 {
+  
+    /**
+     * @ORM\OneToMany(targetEntity="Emion\RegisterBundle\Entity\NPCBook", mappedBy="npc", orphanRemoval=true)
+     */
+    private $references;
+
     /**
     * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\Race", cascade={"persist"})
     */

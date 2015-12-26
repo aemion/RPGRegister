@@ -1,0 +1,30 @@
+{% extends "EmionRegisterBundle::layout.html.twig" %}
+
+{% block emionregister_body %}
+  {% if reference is not null %}
+
+    {% if reference.npc is not null %}
+      <h2>Edit a reference to {{reference.npc.name}}</h2>
+
+      {{ include("EmionRegisterBundle:Character:refForm.html.twig") }}
+
+      <p>
+        <a href="{{ path('emion_register_view_npc', {'id': reference.npc.id}) }}" class="btn btn-default">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+          Back to the NPC
+        </a>
+      </p>
+    {% else %}
+      <h3>There is no NPC linked to this reference</h3>
+      <div>
+        {{ include("::submitError.html.twig") }}
+      </div>
+    {% endif %}
+  {% else %}
+    <h3>Can't find this reference</h3>
+    <div>
+      <p>No reference here<p/>
+      {{ include("::submitError.html.twig") }}
+    </div>
+  {% endif %}
+{% endblock %}
