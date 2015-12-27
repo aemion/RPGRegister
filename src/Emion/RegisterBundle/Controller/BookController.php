@@ -28,6 +28,7 @@ class BookController extends Controller
   }
   
   public function addAction(Request $request) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to add a book");
     $book = new Book();
     
     $form = $this->createForm(new BookType(), $book);
@@ -61,7 +62,9 @@ class BookController extends Controller
   }
   
   public function editAction($id, Request $request) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to edit a book");
     $book = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:Book')->findOneById($id);
+    $this->denyAccessUnlessGranted('EDIT', $book, "You don't have the required permissions to edit this book");
     
     $form = $this->createForm(new BookType(), $book);
                  
@@ -79,8 +82,10 @@ class BookController extends Controller
   }
   
   public function delAction($id) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to delete a book");
     $em = $this->getDoctrine()->getManager();
     $book = $em->getRepository('EmionRegisterBundle:Book')->findOneById($id);
+    $this->denyAccessUnlessGranted('DELETE', $book, "You don't have the required permissions to delete this book");
     $view = $this->render('EmionRegisterBundle:Book:del.html.twig', array('book' => $book));
     if($book != null) {
       $em->remove($book);
