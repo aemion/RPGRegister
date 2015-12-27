@@ -8,14 +8,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 
 use Emion\RegisterBundle\Entity\Book;
 use Emion\RegisterBundle\Form\BookType;
 
 class BookController extends Controller
 {
-   private function grantRightsOverBook(NPC $npc) {
-   // creating the ACL
+   private function grantRightsOverBook(Book $book) {
+    // creating the ACL
     $aclProvider = $this->get('security.acl.provider');
     $objectIdentity = ObjectIdentity::fromDomainObject($book);
     $acl = $aclProvider->createAcl($objectIdentity);
@@ -27,6 +28,9 @@ class BookController extends Controller
 
     // grant owner access
     $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $securityIdentity = new RoleSecurityIdentity("ROLE_ADMIN");
+    // grant owner access to users with above role
+    $acl->insertClassAce($securityIdentity, MaskBuilder::MASK_OWNER);
     $aclProvider->updateAcl($acl);
   }
   

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 
 use Emion\RegisterBundle\Entity\NPC;
 use Emion\RegisterBundle\Form\NPCType;
@@ -30,6 +31,9 @@ class CharacterController extends Controller
 
     // grant owner access
     $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $securityIdentity = new RoleSecurityIdentity("ROLE_ADMIN");
+    // grant owner access to users with above role
+    $acl->insertClassAce($securityIdentity, MaskBuilder::MASK_OWNER);
     $aclProvider->updateAcl($acl);
 
   }
@@ -47,6 +51,9 @@ class CharacterController extends Controller
 
     // grant owner access
     $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $securityIdentity = new RoleSecurityIdentity("ROLE_ADMIN");
+    // grant owner access to users with above role
+    $acl->insertClassAce($securityIdentity, MaskBuilder::MASK_OWNER);
     $aclProvider->updateAcl($acl);
   }
   
