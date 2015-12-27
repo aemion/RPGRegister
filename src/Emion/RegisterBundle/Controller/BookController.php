@@ -14,6 +14,23 @@ use Emion\RegisterBundle\Form\BookType;
 
 class BookController extends Controller
 {
+   private function grantRightsOverBook(NPC $npc) {
+   // creating the ACL
+    $aclProvider = $this->get('security.acl.provider');
+    $objectIdentity = ObjectIdentity::fromDomainObject($book);
+    $acl = $aclProvider->createAcl($objectIdentity);
+
+    // retrieving the security identity of the currently logged-in user
+    $tokenStorage = $this->get('security.token_storage');
+    $user = $tokenStorage->getToken()->getUser();
+    $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+    // grant owner access
+    $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $aclProvider->updateAcl($acl);
+  }
+  
+  
   public function viewAction($id) {
     $book = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:Book')->findOneById($id);
     return $this->render('EmionRegisterBundle:Book:view.html.twig', array('book' => $book));
@@ -40,19 +57,7 @@ class BookController extends Controller
       $em->persist($book);
       $em->flush();
       
-      // creating the ACL
-      $aclProvider = $this->get('security.acl.provider');
-      $objectIdentity = ObjectIdentity::fromDomainObject($book);
-      $acl = $aclProvider->createAcl($objectIdentity);
-
-      // retrieving the security identity of the currently logged-in user
-      $tokenStorage = $this->get('security.token_storage');
-      $user = $tokenStorage->getToken()->getUser();
-      $securityIdentity = UserSecurityIdentity::fromAccount($user);
-
-      // grant owner access
-      $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
-      $aclProvider->updateAcl($acl);
+      $this->grantRightsOverBook($book);
 
       $request->getSession()->getFlashBag()->add('notice', 'Book added.');
       return $this->redirect($this->generateUrl('emion_register_view_book', array('id' => $book->getId())));

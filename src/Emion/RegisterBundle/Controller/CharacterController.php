@@ -17,6 +17,39 @@ use Emion\RegisterBundle\Form\NPCBookType;
 
 class CharacterController extends Controller
 {
+  private function grantRightsOverNPC(NPC $npc) {
+   // creating the ACL
+    $aclProvider = $this->get('security.acl.provider');
+    $objectIdentity = ObjectIdentity::fromDomainObject($npc);
+    $acl = $aclProvider->createAcl($objectIdentity);
+
+    // retrieving the security identity of the currently logged-in user
+    $tokenStorage = $this->get('security.token_storage');
+    $user = $tokenStorage->getToken()->getUser();
+    $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+    // grant owner access
+    $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $aclProvider->updateAcl($acl);
+
+  }
+  
+  private function grantRightsOverRef(NPCBook $npcbook) {
+    // creating the ACL
+    $aclProvider = $this->get('security.acl.provider');
+    $objectIdentity = ObjectIdentity::fromDomainObject($npcbook);
+    $acl = $aclProvider->createAcl($objectIdentity);
+
+    // retrieving the security identity of the currently logged-in user
+    $tokenStorage = $this->get('security.token_storage');
+    $user = $tokenStorage->getToken()->getUser();
+    $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+    // grant owner access
+    $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $aclProvider->updateAcl($acl);
+  }
+  
   public function viewAction($id) {
     $npc = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
     $listReferences = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPCBook')->findBy(array('npc' => $npc));
@@ -37,20 +70,7 @@ class CharacterController extends Controller
       $em->persist($npc);
       $em->flush();
       
-       // creating the ACL
-      $aclProvider = $this->get('security.acl.provider');
-      $objectIdentity = ObjectIdentity::fromDomainObject($npc);
-      $acl = $aclProvider->createAcl($objectIdentity);
-
-      // retrieving the security identity of the currently logged-in user
-      $tokenStorage = $this->get('security.token_storage');
-      $user = $tokenStorage->getToken()->getUser();
-      $securityIdentity = UserSecurityIdentity::fromAccount($user);
-
-      // grant owner access
-      $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
-      $aclProvider->updateAcl($acl);
-
+      $this->grantRightsOverNPC($npc);
       $request->getSession()->getFlashBag()->add('notice', 'NPC added.');
       return $this->redirect($this->generateUrl('emion_register_view_npc', array('id' => $npc->getId())));
     }             
@@ -120,19 +140,7 @@ class CharacterController extends Controller
       $em->persist($npcbook);
       $em->flush();
       
-      // creating the ACL
-      $aclProvider = $this->get('security.acl.provider');
-      $objectIdentity = ObjectIdentity::fromDomainObject($npcbook);
-      $acl = $aclProvider->createAcl($objectIdentity);
-
-      // retrieving the security identity of the currently logged-in user
-      $tokenStorage = $this->get('security.token_storage');
-      $user = $tokenStorage->getToken()->getUser();
-      $securityIdentity = UserSecurityIdentity::fromAccount($user);
-
-      // grant owner access
-      $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
-      $aclProvider->updateAcl($acl);
+      $this->grantRightsOverRef($npcbook);
 
       $request->getSession()->getFlashBag()->add('notice', 'Reference added.');
       return $this->redirect($this->generateUrl('emion_register_view_npc', array('id' => $npc->getId())));
