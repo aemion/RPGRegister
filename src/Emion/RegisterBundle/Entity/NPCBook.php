@@ -3,6 +3,7 @@
 namespace Emion\RegisterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * NPCBook
@@ -37,6 +38,7 @@ class NPCBook
      * @var integer
      *
      * @ORM\Column(name="page", type="integer")
+     * @Assert\NotBlank()
      */
     private $page;
     

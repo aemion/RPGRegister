@@ -4,6 +4,7 @@ namespace Emion\RegisterBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * NPC
@@ -47,6 +48,7 @@ class NPC
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -82,6 +84,7 @@ class NPC
      * @var string
      *
      * @ORM\Column(name="activity", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $activity;
 
