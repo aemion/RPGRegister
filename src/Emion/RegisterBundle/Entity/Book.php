@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Book
  *
- * @ORM\Table(name="book")
+ * @ORM\Table(name="book", uniqueConstraints={@ORM\UniqueConstraint(name="book_unique", columns={"name", "universe_id"})})
  * @ORM\Entity(repositoryClass="Emion\RegisterBundle\Repository\BookRepository")
- * @UniqueEntity("name")
+ * @UniqueEntity({"name", "universe"})
  */
 class Book
 {
@@ -22,6 +22,7 @@ class Book
     
     /**
     * @ORM\ManyToOne(targetEntity="Emion\RegisterBundle\Entity\Universe", cascade={"persist"})
+    * @ORM\JoinColumn(name="universe_id", referencedColumnName="id")
     */
     private $universe;
     
@@ -37,7 +38,7 @@ class Book
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255)
      * @Assert\NotBlank()
      */
     private $name;

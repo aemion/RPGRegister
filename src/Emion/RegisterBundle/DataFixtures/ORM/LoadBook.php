@@ -16,6 +16,10 @@ class LoadBook implements FixtureInterface
     $universe = new Universe();
     $universe->setName("Warhammer");
     $universe->setDescription("Un univers un peu dark");
+    $universe2 = new Universe();
+    $universe2->setName("D&D");
+    $universe2->setDescription("Un univers de gros bills");
+    $manager->persist($universe2);
     $books = array(
       'Livre de base' => 'Le livre de base de WJDR detaillant les regles principales',
       'Tome de la corruption' => 'Chaos',
