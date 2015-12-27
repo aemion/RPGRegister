@@ -2,10 +2,16 @@
   {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
     {{ form_errors(form) }}
+    {{ form_errors(form.name) }}
+    {{ form_errors(form.universe) }}
+    {{ form_errors(form.race) }}
+    {{ form_errors(form.location) }}
+    {{ form_errors(form.activity) }}
+    {{ form_errors(form.birth) }}
+    {{ form_errors(form.death) }}
 
     <div class="form-group">
       {{ form_label(form.name, "Name", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-      {{ form_errors(form.name) }}
       <div class="col-sm-3">
         {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
       </div>
@@ -13,7 +19,6 @@
     
     <div class="form-group">
       {{ form_label(form.universe, "Universe", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-      {{ form_errors(form.universe) }}
       <div class="col-sm-3">
         {{ form_widget(form.universe, {'attr': {'class': 'form-control'}}) }}
       </div>
@@ -21,7 +26,6 @@
     
     <div class="form-group text-left">
       {{ form_label(form.race, "Race", {'label_attr': {'class': 'col-sm-2 control-label text-left'}}) }}
-      {{ form_errors(form.race) }}
       <div class="col-sm-3">
         {{ form_widget(form.race, {'attr': {'class': 'form-control'}}) }}
       </div>
@@ -29,7 +33,6 @@
     
     <div class="form-group">
       {{ form_label(form.location, "Location", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-      {{ form_errors(form.location) }}
       <div class="col-sm-3">
         {{ form_widget(form.location, {'attr': {'class': 'form-control'}}) }}
       </div>
@@ -37,7 +40,6 @@
     
     <div class="form-group">
       {{ form_label(form.activity, "Activity", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-      {{ form_errors(form.activity) }}
       <div class="col-sm-3">
         {{ form_widget(form.activity, {'attr': {'class': 'form-control'}}) }}
       </div>
@@ -45,12 +47,10 @@
     
     <div class="form-group">
       {{ form_label(form.birth, "Birth year", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-      {{ form_errors(form.birth) }}
       <div class="col-sm-3">
         {{ form_widget(form.birth, {'attr': {'class': 'form-control'}}) }}
       </div>
       {{ form_label(form.death, "Death year", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-      {{ form_errors(form.death) }}
       <div class="col-sm-3">
         {{ form_widget(form.death, {'attr': {'class': 'form-control'}}) }}
       </div>

@@ -2,10 +2,12 @@
   {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
     {{ form_errors(form) }}
+    {{ form_errors(form.book) }}
+    {{ form_errors(form.page) }}
+    {{ form_errors(form.details) }}
 
     <div class="form-group">
       {{ form_label(form.book, "Book", {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
-      {{ form_errors(form.book) }}
       <div class="col-sm-3">
         {{ form_widget(form.book, {'attr': {'class': 'form-control'}}) }}
       </div>
@@ -13,7 +15,6 @@
     
     <div class="form-group">
       {{ form_label(form.page, "Page", {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
-      {{ form_errors(form.page) }}
       <div class="col-sm-3">
         {{ form_widget(form.page, {'attr': {'class': 'form-control'}}) }}
       </div>
@@ -23,7 +24,6 @@
 
     <div class="form-group">
       {{ form_label(form.details, "Details", {'label_attr': {'class': 'col-sm-1 control-label'}}) }}
-      {{ form_errors(form.details) }}
       <div class="col-sm-8">
         {{ form_widget(form.details, {'attr': {'class': 'form-control'}}) }}
       </div>

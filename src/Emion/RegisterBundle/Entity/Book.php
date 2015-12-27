@@ -3,12 +3,15 @@
 namespace Emion\RegisterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * Book
  *
  * @ORM\Table(name="book")
  * @ORM\Entity(repositoryClass="Emion\RegisterBundle\Repository\BookRepository")
+ * @UniqueEntity("name")
  */
 class Book
 {
