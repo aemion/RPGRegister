@@ -6,7 +6,7 @@ parameters:
 services:
     emion_user.registration:
         class: Emion\UserBundle\EventListener\RegistrationListener
-        arguments: [@fos_user.user_manager]
+        arguments: ["@fos_user.user_manager"]
         tags:
             - { name: kernel.event_subscriber }
 #    service_name:

@@ -40,7 +40,7 @@ security:
                 path:   fos_user_security_logout
                 target: /
             remember_me:
-                key: %secret%
+                secret: %secret%
             # activate different ways to authenticate
 
             # http_basic: ~
