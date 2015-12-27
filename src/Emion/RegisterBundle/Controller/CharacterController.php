@@ -92,6 +92,10 @@ class CharacterController extends Controller
     $em = $this->getDoctrine()->getManager();
     $npc = $em->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
     $this->denyAccessUnlessGranted('DELETE', $npc, "You don't have the required permissions to delete this NPC");
+    $listReferences = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPCBook')->findBy(array('npc' => $npc));
+    foreach($listReferences as $ref) {
+      $this->denyAccessUnlessGranted('DELETE', $ref, "You don't have the required permissions to delete at least one reference and therefore to delete this NPC");
+    }
     $view = $this->render('EmionRegisterBundle:Character:del.html.twig', array('npc' => $npc));
     if($npc != null) {
       $em->remove($npc);
@@ -101,6 +105,7 @@ class CharacterController extends Controller
   }
   
   public function addRefAction($id, Request $request) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to add a reference");
     $npc = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
     $npcbook = new NPCBook();
     $npcbook->setNpc($npc);
@@ -137,7 +142,9 @@ class CharacterController extends Controller
   }
   
   public function editRefAction($id, Request $request) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to edit a reference");
     $npcbook = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPCBook')->findOneById($id);
+    $this->denyAccessUnlessGranted('EDIT', $npcbook, "You don't have the required permissions to edit this reference");
     
     $form = $this->createForm(NPCBookType::class, $npcbook);
                  
@@ -166,8 +173,10 @@ class CharacterController extends Controller
   }
   
   public function delRefAjaxAction($id) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to delete a reference");
     $em = $this->getDoctrine()->getManager();
     $ref = $em->getRepository('EmionRegisterBundle:NPCBook')->findOneById($id);
+    $this->denyAccessUnlessGranted('EDIT', $ref, "You don't have the required permissions to delete this reference");
     if($ref != null) {
       $em->remove($ref);
       $em->flush();
