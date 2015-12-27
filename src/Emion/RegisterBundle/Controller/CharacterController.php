@@ -6,6 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
+
 use Emion\RegisterBundle\Entity\NPC;
 use Emion\RegisterBundle\Form\NPCType;
 use Emion\RegisterBundle\Entity\NPCBook;
@@ -13,13 +18,54 @@ use Emion\RegisterBundle\Form\NPCBookType;
 
 class CharacterController extends Controller
 {
+  private function grantRightsOverNPC(NPC $npc) {
+   // creating the ACL
+    $aclProvider = $this->get('security.acl.provider');
+    $objectIdentity = ObjectIdentity::fromDomainObject($npc);
+    $acl = $aclProvider->createAcl($objectIdentity);
+
+    // retrieving the security identity of the currently logged-in user
+    $tokenStorage = $this->get('security.token_storage');
+    $user = $tokenStorage->getToken()->getUser();
+    $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+    // grant owner access
+    $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $securityIdentity = new RoleSecurityIdentity("ROLE_ADMIN");
+    // grant owner access to users with above role
+    $acl->insertClassAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $aclProvider->updateAcl($acl);
+
+  }
+  
+  private function grantRightsOverRef(NPCBook $npcbook) {
+    // creating the ACL
+    $aclProvider = $this->get('security.acl.provider');
+    $objectIdentity = ObjectIdentity::fromDomainObject($npcbook);
+    $acl = $aclProvider->createAcl($objectIdentity);
+
+    // retrieving the security identity of the currently logged-in user
+    $tokenStorage = $this->get('security.token_storage');
+    $user = $tokenStorage->getToken()->getUser();
+    $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+    // grant owner access
+    $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $securityIdentity = new RoleSecurityIdentity("ROLE_ADMIN");
+    // grant owner access to users with above role
+    $acl->insertClassAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $aclProvider->updateAcl($acl);
+  }
+  
   public function viewAction($id) {
     $npc = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
     $listReferences = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPCBook')->findBy(array('npc' => $npc));
     return $this->render('EmionRegisterBundle:Character:view.html.twig', array('npc' => $npc, 'listReferences' => $listReferences));
   }
   
+  
   public function addAction(Request $request) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to add a NPC");
     $npc = new NPC();
     
     $form = $this->createForm(NPCType::class, $npc);
@@ -30,7 +76,8 @@ class CharacterController extends Controller
       $em = $this->getDoctrine()->getManager();
       $em->persist($npc);
       $em->flush();
-
+      
+      $this->grantRightsOverNPC($npc);
       $request->getSession()->getFlashBag()->add('notice', 'NPC added.');
       return $this->redirect($this->generateUrl('emion_register_view_npc', array('id' => $npc->getId())));
     }             
@@ -40,8 +87,10 @@ class CharacterController extends Controller
   
   public function editAction($id, Request $request) 
   {
-    $npc = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to edit a NPC");
     
+    $npc = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
+    $this->denyAccessUnlessGranted('EDIT', $npc, "You don't have the required permissions to edit this NPC");
     $form = $this->createForm(NPCType::class, $npc);
                  
     $form->handleRequest($request);
@@ -66,8 +115,14 @@ class CharacterController extends Controller
   }
   
   public function delAction($id) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to delete a NPC");
     $em = $this->getDoctrine()->getManager();
     $npc = $em->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
+    $this->denyAccessUnlessGranted('DELETE', $npc, "You don't have the required permissions to delete this NPC");
+    $listReferences = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPCBook')->findBy(array('npc' => $npc));
+    foreach($listReferences as $ref) {
+      $this->denyAccessUnlessGranted('DELETE', $ref, "You don't have the required permissions to delete at least one reference and therefore to delete this NPC");
+    }
     $view = $this->render('EmionRegisterBundle:Character:del.html.twig', array('npc' => $npc));
     if($npc != null) {
       $em->remove($npc);
@@ -77,6 +132,7 @@ class CharacterController extends Controller
   }
   
   public function addRefAction($id, Request $request) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to add a reference");
     $npc = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPC')->findOneById($id);
     $npcbook = new NPCBook();
     $npcbook->setNpc($npc);
@@ -90,6 +146,8 @@ class CharacterController extends Controller
       $em = $this->getDoctrine()->getManager();
       $em->persist($npcbook);
       $em->flush();
+      
+      $this->grantRightsOverRef($npcbook);
 
       $request->getSession()->getFlashBag()->add('notice', 'Reference added.');
       return $this->redirect($this->generateUrl('emion_register_view_npc', array('id' => $npc->getId())));
@@ -99,7 +157,9 @@ class CharacterController extends Controller
   }
   
   public function editRefAction($id, Request $request) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to edit a reference");
     $npcbook = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:NPCBook')->findOneById($id);
+    $this->denyAccessUnlessGranted('EDIT', $npcbook, "You don't have the required permissions to edit this reference");
     
     $form = $this->createForm(NPCBookType::class, $npcbook);
                  
@@ -128,12 +188,16 @@ class CharacterController extends Controller
   }
   
   public function delRefAjaxAction($id) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to delete a reference");
     $em = $this->getDoctrine()->getManager();
     $ref = $em->getRepository('EmionRegisterBundle:NPCBook')->findOneById($id);
+    $this->denyAccessUnlessGranted('EDIT', $ref, "You don't have the required permissions to delete this reference");
     if($ref != null) {
       $em->remove($ref);
       $em->flush();
     }
     return new Response("ref-".$id);
   }
+  
+
 }

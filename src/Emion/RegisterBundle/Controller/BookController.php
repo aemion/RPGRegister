@@ -5,11 +5,36 @@ namespace Emion\RegisterBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
+
 use Emion\RegisterBundle\Entity\Book;
 use Emion\RegisterBundle\Form\BookType;
 
 class BookController extends Controller
 {
+   private function grantRightsOverBook(Book $book) {
+    // creating the ACL
+    $aclProvider = $this->get('security.acl.provider');
+    $objectIdentity = ObjectIdentity::fromDomainObject($book);
+    $acl = $aclProvider->createAcl($objectIdentity);
+
+    // retrieving the security identity of the currently logged-in user
+    $tokenStorage = $this->get('security.token_storage');
+    $user = $tokenStorage->getToken()->getUser();
+    $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+    // grant owner access
+    $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $securityIdentity = new RoleSecurityIdentity("ROLE_ADMIN");
+    // grant owner access to users with above role
+    $acl->insertClassAce($securityIdentity, MaskBuilder::MASK_OWNER);
+    $aclProvider->updateAcl($acl);
+  }
+  
+  
   public function viewAction($id) {
     $book = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:Book')->findOneById($id);
     return $this->render('EmionRegisterBundle:Book:view.html.twig', array('book' => $book));
@@ -24,6 +49,7 @@ class BookController extends Controller
   }
   
   public function addAction(Request $request) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to add a book");
     $book = new Book();
     
     $form = $this->createForm(new BookType(), $book);
@@ -34,6 +60,8 @@ class BookController extends Controller
       $em = $this->getDoctrine()->getManager();
       $em->persist($book);
       $em->flush();
+      
+      $this->grantRightsOverBook($book);
 
       $request->getSession()->getFlashBag()->add('notice', 'Book added.');
       return $this->redirect($this->generateUrl('emion_register_view_book', array('id' => $book->getId())));
@@ -43,7 +71,9 @@ class BookController extends Controller
   }
   
   public function editAction($id, Request $request) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to edit a book");
     $book = $this->getDoctrine()->getManager()->getRepository('EmionRegisterBundle:Book')->findOneById($id);
+    $this->denyAccessUnlessGranted('EDIT', $book, "You don't have the required permissions to edit this book");
     
     $form = $this->createForm(new BookType(), $book);
                  
@@ -61,8 +91,10 @@ class BookController extends Controller
   }
   
   public function delAction($id) {
+    $this->denyAccessUnlessGranted('ROLE_AUTHOR', null, "You must be an author to delete a book");
     $em = $this->getDoctrine()->getManager();
     $book = $em->getRepository('EmionRegisterBundle:Book')->findOneById($id);
+    $this->denyAccessUnlessGranted('DELETE', $book, "You don't have the required permissions to delete this book");
     $view = $this->render('EmionRegisterBundle:Book:del.html.twig', array('book' => $book));
     if($book != null) {
       $em->remove($book);
