@@ -1,10 +1,6 @@
-emion_homepage:
-    pattern: /
-    defaults: {_controller: EmionRegisterBundle:Register:index}
-
 emion_register:
     resource: "@EmionRegisterBundle/Resources/config/routing.yml"
-    prefix:   /register
+    prefix:   /
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
