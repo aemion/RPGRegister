@@ -5,9 +5,8 @@
   <ul>
     {% for book in listBooks %}
       <li>
-        <a href="{{ path('emion_register_view_book', {'id': book.id}) }}">
-          {{ book.name }}
-        </a>
+        <a href="{{ path('emion_register_view_book', {'id': book.id}) }}">{{ book.name }}</a>
+        {% if book.universe is not null %} ({{book.universe.name}}) {% endif %}
       </li>
     {% else %}
       <li>No book added yet...</li>
