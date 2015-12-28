@@ -2,15 +2,6 @@
 
 {% block body %}
   
-  {% if app.request.hasPreviousSession %}
-    {% for key, messages in app.session.flashbag.all() %}
-      {% for message in messages %}
-        <div class="alert alert-{{ key }}">
-          {{ message|trans({}, 'FOSUserBundle') }}
-        </div>
-      {% endfor %}
-    {% endfor %}
-  {% endif %}
   
   
   {% block fos_user_content %}
