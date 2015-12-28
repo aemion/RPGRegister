@@ -15,7 +15,7 @@ class NPCBookType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('book', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', array('class' => 'EmionRegisterBundle:Book', 'choice_label' => 'name'))
+            ->add('book', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', array('class' => 'EmionRegisterBundle:Book', 'choice_label' => 'uniqueName'))
             ->add('page', 'Symfony\Component\Form\Extension\Core\Type\IntegerType')
             ->add('details', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', array('required' => false)) 
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')

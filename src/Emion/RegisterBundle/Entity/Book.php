@@ -132,4 +132,13 @@ class Book
     {
         return $this->universe;
     }
+    
+    /**
+     * Get unique name (name + universe)
+     *
+     * @return string
+     */
+    public function getUniqueName() {
+      return $this->getName()." (".$this->getUniverse()->getName().")";
+    }
 }
