@@ -6,19 +6,27 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Acl\Dbal\MutableAclProvider;
 
 class PrivilegeService
 {
-  public function grantPrivileges($dbObject)
+  private $aclProvider;
+  private $tokenStorage;
+  
+  public function __construct(TokenStorage $tokenStorage, MutableAclProvider $aclProvider)
+  {
+    $this->tokenStorage = $tokenStorage;
+    $this->aclProvider = $aclProvider;
+  }
+  
+  public function grantDefaultPrivileges($dbObject)
   {
     // creating the ACL
-    $aclProvider = $this->get('security.acl.provider');
     $objectIdentity = ObjectIdentity::fromDomainObject($dbObject);
-    $acl = $aclProvider->createAcl($objectIdentity);
+    $acl = $this->aclProvider->createAcl($objectIdentity);
 
-    // retrieving the security identity of the currently logged-in user
-    $tokenStorage = $this->get('security.token_storage');
-    $user = $tokenStorage->getToken()->getUser();
+    $user = $this->tokenStorage->getToken()->getUser();
     
     $securityIdentity = UserSecurityIdentity::fromAccount($user);
     $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
@@ -28,6 +36,6 @@ class PrivilegeService
     $securityIdentity = new RoleSecurityIdentity("ROLE_ADMIN");
     $acl->insertClassAce($securityIdentity, MaskBuilder::MASK_OWNER);
     
-    $aclProvider->updateAcl($acl);
+    $this->aclProvider->updateAcl($acl);
   }
 }

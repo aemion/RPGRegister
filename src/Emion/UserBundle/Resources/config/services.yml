@@ -1,3 +1,4 @@
 services:
     emion_user.grant_privileges:
         class: Emion\UserBundle\Privileges\PrivilegeService
+        arguments: [@security.token_storage, @security.acl.provider]

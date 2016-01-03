@@ -15,24 +15,6 @@ use Emion\RegisterBundle\Form\BookType;
 
 class BookController extends Controller
 {
-   private function grantRightsOverBook(Book $book) {
-    // creating the ACL
-    $aclProvider = $this->get('security.acl.provider');
-    $objectIdentity = ObjectIdentity::fromDomainObject($book);
-    $acl = $aclProvider->createAcl($objectIdentity);
-
-    // retrieving the security identity of the currently logged-in user
-    $tokenStorage = $this->get('security.token_storage');
-    $user = $tokenStorage->getToken()->getUser();
-    $securityIdentity = UserSecurityIdentity::fromAccount($user);
-
-    // grant owner access
-    $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
-    $securityIdentity = new RoleSecurityIdentity("ROLE_ADMIN");
-    // grant owner access to users with above role
-    $acl->insertClassAce($securityIdentity, MaskBuilder::MASK_OWNER);
-    $aclProvider->updateAcl($acl);
-  }
   
   
   public function viewAction($id) {
@@ -61,7 +43,7 @@ class BookController extends Controller
       $em->persist($book);
       $em->flush();
       
-      $this->grantRightsOverBook($book);
+      $this->get('emion_user.grant_privileges')->grantDefaultPrivileges($book);
 
       $request->getSession()->getFlashBag()->add('notice', 'Book added.');
       return $this->redirect($this->generateUrl('emion_register_view_book', array('id' => $book->getId())));
